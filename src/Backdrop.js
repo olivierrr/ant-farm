@@ -27,7 +27,7 @@ Backdrop.prototype.boot = function () {
 
 	var gradient = this.ctx.createLinearGradient(0,0,0,height)
 	gradient.addColorStop(0,'white')
-	gradient.addColorStop(1,'red')
+	gradient.addColorStop(1, '#FF3F73')
 	this.ctx.fillStyle = gradient
 	this.ctx.fillRect(0, 0, width, height)
 
@@ -37,20 +37,6 @@ Backdrop.prototype.boot = function () {
  * @method
  */
 Backdrop.prototype.update = function () {
-
-}
-
-/**
- * @method
- */
-Backdrop.prototype.method_name = function () {
-
-}
-
-/**
- * @method
- */
-Backdrop.prototype.method_name = function () {
 
 }
 

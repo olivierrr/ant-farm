@@ -20,6 +20,7 @@ Ant.prototype.boot = function () {
  * @method
  */
 Ant.prototype.update = function () {
+	
 }
 
 /**

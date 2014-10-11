@@ -26,8 +26,8 @@ Soil.prototype.boot = function () {
 	,	soilDepth = this.antFarm.ops.initialSoilDepth
 
 	var gradient = this.ctx.createLinearGradient(0,0,0,height)
-	gradient.addColorStop(0,"#004D81");
-	gradient.addColorStop(1,"#150034");
+	gradient.addColorStop(0,"#0069AE")
+	gradient.addColorStop(1,"#2B006A")
 	this.ctx.fillStyle = gradient
 	this.ctx.fillRect(0, height*(1-soilDepth), width, height*soilDepth)
 }

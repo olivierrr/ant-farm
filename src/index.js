@@ -1,6 +1,7 @@
 var Colony = require('./Colony')
 ,	Soil = require('./Soil')
 ,	Backdrop = require('./Backdrop')
+
 /**
  * @constructor
  * @param {Object|domNode} [document.body]
@@ -16,9 +17,9 @@ function AntFarm (container, width, height) {
 		container: container || document.body,
 		width: width || window.innerWidth,
 		height: height || window.innerHeight,
-		initialAntCount: 50,
+		initialAntCount: 5,
 		initialSoilDepth: 0.90,
-		antSize: 1
+		antSize: 3
 	}
 
 	/**
@@ -91,12 +92,38 @@ AntFarm.prototype.tick = function () {
  * @method
  */
 AntFarm.prototype.method_name = function () {
-	
+
 }
 
-//
-
-window. o = new AntFarm()
+// dev
+window.o = new AntFarm()
 document.body.style.overflow = 'hidden'
 document.body.style.margin = '0px'
 document.body.style.padding = '0px'
+
+var isDropping = false
+var mousePos = {
+	x: 0,
+	y: 0
+}
+
+document.body.addEventListener('mousedown', function (e) {
+	isDropping = true
+	mousePos.x = e.x
+	mousePos.y = e.y
+})
+
+document.body.addEventListener('mousemove', function (e) {
+	mousePos.x = e.x
+	mousePos.y = e.y
+})
+
+document.body.addEventListener('mouseup', function (e) {
+	isDropping = false
+})
+
+window.setInterval(function () {
+	if(isDropping && o.soil.getPixel(mousePos.x, mousePos.y) === 0) {
+		o.colony.newAnt(mousePos.x, mousePos.y)
+	}
+}, 10)

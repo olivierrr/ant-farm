@@ -33,7 +33,7 @@ Colony.prototype.boot = function () {
 	,	soilDepth = this.antFarm.ops.initialSoilDepth
 
 	for (var i = 0; i < this.antFarm.ops.initialAntCount; i++) {
-		this.ants.push(new Ant(utils.randomIntBetween(0, width), height*(1-soilDepth-0.05)))
+		this.newAnt(utils.randomIntBetween(0, width), height*(1-soilDepth-0.05))
 	}
 }
 
@@ -52,28 +52,40 @@ Colony.prototype.update = function () {
 	,	halfAntSize = Math.round(antSize/2)
 
 	ctx.clearRect(0, 0, width, height)
+	ctx.fillStyle = 'black'
 
 	for (var i = 0; i < this.ants.length; i++) {
 		ant = this.ants[i]
 
-		//ant.y += Math.sin(Math.random())*2
-		//ant.x += Math.round(Math.random()) === 1 ? Math.sin(Math.random())*5 : -Math.sin(Math.random())*5
-
 		pixel = soil.getPixel(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2))
+		var randomNum = utils.randomIntBetween(0, 10)
 
-		// solid ground!
-		if(pixel === 1) {
-			utils.randomIntBetween(0, 10) === 7 ? soil.removeChunk(ant.x + halfAntSize, (ant.y-1) + (halfAntSize * 2)) : Math.round(Math.random()) === 1 ? ant.x += 0.5 : ant.x -= 0.5
-		}
-		// falls down
-		else {
-			ant.y += 0.5
+		if(pixel === 0) ant.y += 1.5
+
+		switch (randomNum) {
+			case 1:
+				soil.removeChunk(ant.x + halfAntSize, (ant.y-1) + (halfAntSize * 2))
+				ant.y += 0.5
+				break
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				soil.removeChunk(ant.x, (ant.y-1) + (halfAntSize * 2))
+				ant.x += 1
+				break
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				soil.removeChunk(ant.x + antSize, (ant.y-1) + (halfAntSize))
+				ant.x -= 1
+				break
 		}
 
 		ant.x = utils.clamp(ant.x, 0+ antSize, width - antSize)
 		ant.y = utils.clamp(ant.y, 0+ antSize, height-5)
 
-		ctx.fillStyle = '#5BFF22'
 		ctx.fillRect(ant.x, ant.y, antSize, antSize)
 
 		// ctx.fillStyle = '#0074FF'
@@ -85,15 +97,8 @@ Colony.prototype.update = function () {
 /**
  * @method
  */
-Colony.prototype.render = function () {
-
-}
-
-/**
- * @method
- */
-Colony.prototype.method_name = function () {
-	
+Colony.prototype.newAnt = function (x, y) {
+	this.ants.push(new Ant(x, y))
 }
 
 /**
