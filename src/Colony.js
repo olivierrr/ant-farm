@@ -1,4 +1,5 @@
 var Ant = require('./Ant')
+,	utils = require('./Utils')
 
 /**
  * @constructor
@@ -19,14 +20,20 @@ function Colony (antFarm, ctx) {
 	 * @property {Array}
 	 */
 	this.ants = []
+
 }
 
 /**
  * @method
  */
 Colony.prototype.boot = function () {
+
+	var width = this.antFarm.ops.width
+	,	height = this.antFarm.ops.height
+	,	soilDepth = this.antFarm.ops.initialSoilDepth
+
 	for (var i = 0; i < this.antFarm.ops.initialAntCount; i++) {
-		this.ants.push(new Ant())
+		this.ants.push(new Ant(utils.randomIntBetween(0, width), height*(1-soilDepth)))
 	}
 }
 
@@ -46,16 +53,19 @@ Colony.prototype.update = function () {
 	for (var i = 0; i < this.ants.length; i++) {
 		ant = this.ants[i]
 
-		ant.x += Math.random()*10
-		ant.y += Math.random()*10
+		ant.y += Math.sin(Math.random())*2
+		ant.x += Math.round(Math.random()) === 1 ? Math.sin(Math.random())*5 : -Math.sin(Math.random())*5
 
 		pixelData = soilCtx.getImageData(ant.x, ant.y, 1, 1)
 		if (pixelData.data[3] > 0) {
-			soilCtx.globalCompositeOperation = "destination-out"
+			soilCtx.globalCompositeOperation = 'destination-out'
 			soilCtx.beginPath()
-			soilCtx.arc(ant.x, ant.y, 10, 0, Math.PI * 2, false)
+			soilCtx.arc(ant.x, ant.y, 3, 0, Math.PI * 2, false)
 			soilCtx.fill()
 		}
+
+		ant.x = utils.clamp(ant.x, 0, width)
+		ant.y = utils.clamp(ant.y, 0, height)
 
 		ctx.fillRect(ant.x, ant.y, 10, 10)
 	}

@@ -1,3 +1,5 @@
+var utils = require('./Utils')
+
 /**
  * @constructor
  */
@@ -19,9 +21,13 @@ function Soil (antFarm, ctx) {
  * @method
  */
 Soil.prototype.boot = function () {
-	this.ctx.beginPath();
-	this.ctx.arc(500 / 2, 500 / 2, 500, 0, Math.PI * 2, false);
-	this.ctx.fill();	
+
+	var height = this.antFarm.ops.height
+	,	width = this.antFarm.ops.width
+	,	soilDepth = this.antFarm.ops.initialSoilDepth
+
+	this.ctx.fillStyle = '#FF6556'
+	this.ctx.fillRect(0, height*(1-soilDepth), width, height*soilDepth)
 }
 
 /**

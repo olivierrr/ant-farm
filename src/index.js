@@ -16,7 +16,8 @@ function AntFarm (container, width, height) {
 		container: container || document.body,
 		width: width || window.innerWidth,
 		height: height || window.innerHeight,
-		initialAntCount: 100
+		initialAntCount: 50,
+		initialSoilDepth: 0.90,
 	}
 
 	/**
@@ -86,16 +87,9 @@ AntFarm.prototype.update = function () {
 /**
  * @method
  */
-AntFarm.prototype.render = function () {
-	
-}
-
-/**
- * @method
- */
 AntFarm.prototype.tick = function () {
 	this.update()
-	this.render()
+	//this.render()
 
 	requestAnimationFrame(this.tick.bind(this))
 }
