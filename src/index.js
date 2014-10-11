@@ -1,12 +1,17 @@
-var Ant = require('./Ant')
 var Colony = require('./Colony')
-var Soil = require('./Soil')
+,	Soil = require('./Soil')
+
 /**
  * @constructor
- * @param {Object|domNode}
+ * @param {Object|domNode} [document.body]
+ * @param {Number} [100%]
+ * @param {Number} [100%]
  */
 function AntFarm (container, width, height) {
 
+	/**
+	 * @property {Object} - 'options'
+	 */
 	this.ops = {
 		container: container || document.body,
 		width: width || window.innerWidth,
@@ -19,24 +24,24 @@ function AntFarm (container, width, height) {
 	 *
 	 * @property {2d-context}
 	 */
-	this.ctx1 = this.appendCanvas()
+	this.ctx1 = null
 
 	/**
 	 * background ctx
 	 *
 	 * @property {2d-context}
 	 */
-	this.ctx0 = this.appendCanvas()
+	this.ctx2 = null
 
 	/**
 	 * @property {Object}
 	 */
-	this.colony = new Colony(this, this.ctx1)
+	this.colony = null
 
 	/**
 	 * @property {Object}
 	 */
-	this.soil = new Soil(this, this.ctx0)
+	this.soil = null
 
 	this.boot()
 }
@@ -46,8 +51,14 @@ function AntFarm (container, width, height) {
  */
 AntFarm.prototype.boot = function () {
 
-	this.soil.boot()
+	this.ctx1 = this.appendCanvas()
+	this.ctx2 = this.appendCanvas()
+
+	this.soil = new Soil(this, this.ctx1)
+	this.colony = new Colony(this, this.ctx2)
+
 	this.colony.boot()
+	this.soil.boot()
 
 	this.tick()
 
@@ -58,6 +69,7 @@ AntFarm.prototype.boot = function () {
  */
 AntFarm.prototype.appendCanvas = function () {
 	var canvas = document.createElement('canvas')
+	canvas.style.position = 'absolute'
 	canvas.width = this.ops.width
 	canvas.height = this.ops.height
 	this.ops.container.appendChild(canvas)
@@ -68,14 +80,14 @@ AntFarm.prototype.appendCanvas = function () {
  * @method
  */
 AntFarm.prototype.update = function () {
-	var ants = this.ants
+	this.colony.update()
 }
 
 /**
  * @method
  */
 AntFarm.prototype.render = function () {
-	var ants = this.ants
+	
 }
 
 /**
