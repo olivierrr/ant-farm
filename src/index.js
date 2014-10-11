@@ -18,6 +18,7 @@ function AntFarm (container, width, height) {
 		height: height || window.innerHeight,
 		initialAntCount: 50,
 		initialSoilDepth: 0.90,
+		antSize: 3
 	}
 
 	/**

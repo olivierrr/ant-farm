@@ -33,7 +33,7 @@ Colony.prototype.boot = function () {
 	,	soilDepth = this.antFarm.ops.initialSoilDepth
 
 	for (var i = 0; i < this.antFarm.ops.initialAntCount; i++) {
-		this.ants.push(new Ant(utils.randomIntBetween(0, width), height*(1-soilDepth)))
+		this.ants.push(new Ant(utils.randomIntBetween(0, width), height*(1-soilDepth-0.05)))
 	}
 }
 
@@ -44,32 +44,44 @@ Colony.prototype.update = function () {
 
 	var ctx = this.ctx
 	,	ant
-	,	pixelData
-	, 	soilCtx = this.antFarm.soil.ctx
+	,	pixel
+	, 	soil = this.antFarm.soil
 	,	width = this.antFarm.ops.width
 	,	height = this.antFarm.ops.height
+	,	antSize = this.antFarm.ops.antSize
+	,	halfAntSize = Math.round(antSize/2)
+
+	//console.log(halfAntSize)
 
 	ctx.clearRect(0, 0, width, height)
 
 	for (var i = 0; i < this.ants.length; i++) {
 		ant = this.ants[i]
 
-		ant.y += Math.sin(Math.random())*2
-		ant.x += Math.round(Math.random()) === 1 ? Math.sin(Math.random())*5 : -Math.sin(Math.random())*5
+		//ant.y += Math.sin(Math.random())*2
+		//ant.x += Math.round(Math.random()) === 1 ? Math.sin(Math.random())*5 : -Math.sin(Math.random())*5
 
-		pixelData = soilCtx.getImageData(ant.x, ant.y, 1, 1)
-		if (pixelData.data[3] > 0) {
-			soilCtx.globalCompositeOperation = 'destination-out'
-			soilCtx.beginPath()
-			soilCtx.arc(ant.x, ant.y, 2, 0, Math.PI * 2, false)
-			soilCtx.fill()
+		pixel = soil.getPixel(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2))
+
+		ctx.fillStyle = '#5BFF22'
+		// solid ground!
+		if(pixel === 1) {
+			utils.randomIntBetween(1, 10) === 5 ? soil.removeChunk(ant.x+halfAntSize, (ant.y-1) + (halfAntSize * 2) ) : Math.round(Math.random()) === 1 ? ant.x +=0.5 : ant.x -=0.5
+		} else {
+			ant.y += 1
 		}
 
-		ant.x = utils.clamp(ant.x, 0, width)
-		ant.y = utils.clamp(ant.y, 0, height-5)
+		//soil.removeChunk(ant.x, ant.y)
 
-		ctx.fillRect(ant.x, ant.y, 3, 5)
+		ant.x = utils.clamp(ant.x, 0+ antSize, width - antSize)
+		ant.y = utils.clamp(ant.y, 0+ antSize, height-5)
+
+		ctx.fillRect(ant.x, ant.y, antSize, antSize)
+
+		ctx.fillStyle = '#0074FF'
+		ctx.fillRect(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2), 1, 1)
 	}
+
 }
 
 /**
