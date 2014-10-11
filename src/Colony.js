@@ -41,6 +41,7 @@ Colony.prototype.boot = function () {
  * @method
  */
 Colony.prototype.update = function () {
+
 	var ctx = this.ctx
 	,	ant
 	,	pixelData
@@ -60,14 +61,14 @@ Colony.prototype.update = function () {
 		if (pixelData.data[3] > 0) {
 			soilCtx.globalCompositeOperation = 'destination-out'
 			soilCtx.beginPath()
-			soilCtx.arc(ant.x, ant.y, 3, 0, Math.PI * 2, false)
+			soilCtx.arc(ant.x, ant.y, 2, 0, Math.PI * 2, false)
 			soilCtx.fill()
 		}
 
 		ant.x = utils.clamp(ant.x, 0, width)
-		ant.y = utils.clamp(ant.y, 0, height)
+		ant.y = utils.clamp(ant.y, 0, height-5)
 
-		ctx.fillRect(ant.x, ant.y, 10, 10)
+		ctx.fillRect(ant.x, ant.y, 3, 5)
 	}
 }
 
