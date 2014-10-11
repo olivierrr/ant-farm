@@ -21,7 +21,6 @@ function Soil (antFarm, ctx) {
  * @method
  */
 Soil.prototype.boot = function () {
-
 	var height = this.antFarm.ops.height
 	,	width = this.antFarm.ops.width
 	,	soilDepth = this.antFarm.ops.initialSoilDepth
@@ -36,7 +35,7 @@ Soil.prototype.boot = function () {
 /**
  * @method
  */
-Soil.prototype.render = function () {
+Soil.prototype.update = function () {
 
 }
 
@@ -67,7 +66,7 @@ Soil.prototype.alphaChunk = function (x, y) {
 Soil.prototype.removeChunk = function (x, y) {
 	this.ctx.globalCompositeOperation = 'destination-out'
 	this.ctx.beginPath()
-	this.ctx.arc(x, y, 3, 0, Math.PI * 2, false)
+	this.ctx.arc(x, y, 1, 0, Math.PI * 2, false)
 	this.ctx.fill()
 }
 

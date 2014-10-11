@@ -51,8 +51,6 @@ Colony.prototype.update = function () {
 	,	antSize = this.antFarm.ops.antSize
 	,	halfAntSize = Math.round(antSize/2)
 
-	//console.log(halfAntSize)
-
 	ctx.clearRect(0, 0, width, height)
 
 	for (var i = 0; i < this.ants.length; i++) {
@@ -63,23 +61,23 @@ Colony.prototype.update = function () {
 
 		pixel = soil.getPixel(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2))
 
-		ctx.fillStyle = '#5BFF22'
 		// solid ground!
 		if(pixel === 1) {
-			utils.randomIntBetween(1, 10) === 5 ? soil.removeChunk(ant.x+halfAntSize, (ant.y-1) + (halfAntSize * 2) ) : Math.round(Math.random()) === 1 ? ant.x +=0.5 : ant.x -=0.5
-		} else {
-			ant.y += 1
+			utils.randomIntBetween(0, 10) === 7 ? soil.removeChunk(ant.x + halfAntSize, (ant.y-1) + (halfAntSize * 2)) : Math.round(Math.random()) === 1 ? ant.x += 0.5 : ant.x -= 0.5
 		}
-
-		//soil.removeChunk(ant.x, ant.y)
+		// falls down
+		else {
+			ant.y += 0.5
+		}
 
 		ant.x = utils.clamp(ant.x, 0+ antSize, width - antSize)
 		ant.y = utils.clamp(ant.y, 0+ antSize, height-5)
 
+		ctx.fillStyle = '#5BFF22'
 		ctx.fillRect(ant.x, ant.y, antSize, antSize)
 
-		ctx.fillStyle = '#0074FF'
-		ctx.fillRect(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2), 1, 1)
+		// ctx.fillStyle = '#0074FF'
+		// ctx.fillRect(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2), 1, 1)
 	}
 
 }
