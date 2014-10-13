@@ -21,7 +21,16 @@ function Colony (antFarm, ctx) {
 	 */
 	this.ants = []
 
+	/**
+	 * is -=1 every loop and restarted back to original value when it gets to 0
+	 * when it gets to 0 we check to see if any ant is out of bounds and remove them from the game!
+	 *
+	 * @property {Number}
+	 */
+	this.ticksUntilCollect = 500
+
 	this.boot()
+
 }
 
 /**
@@ -36,12 +45,18 @@ Colony.prototype.boot = function () {
 	for (var i = 0; i < this.antFarm.ops.initialAntCount; i++) {
 		this.newAnt(utils.randomIntBetween(0, width), height*(1-soilDepth-0.05))
 	}
+
 }
 
 /**
  * @method
  */
 Colony.prototype.update = function () {
+
+	if(this.ticksUntilCollect-- === 0) {
+		this.collectOutOfBounds()
+		this.ticksUntilCollect = 500
+	} 
 
 	var ctx = this.ctx
 	,	ant
@@ -84,13 +99,23 @@ Colony.prototype.update = function () {
 				break
 		}
 
-		ant.x = utils.clamp(ant.x, 0+ antSize, width - antSize)
-		ant.y = utils.clamp(ant.y, 0+ antSize, height-5)
-
 		ctx.fillRect(ant.x, ant.y, antSize, antSize)
-
 	}
 
+}
+
+/**
+ * @method
+ */
+Colony.prototype.collectOutOfBounds = function () {
+
+	var width = this.antFarm.ops.width
+	,	height = this.antFarm.ops.height
+
+	for(var i = 0; i < this.ants.length; i++) {
+		var ant = this.ants[i]
+		if(ant.x<0 || ant.y>height || ant.x>width) this.ants.splice(i, 1)
+	}
 }
 
 /**
