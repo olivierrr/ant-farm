@@ -35,29 +35,10 @@ Soil.prototype.boot = function () {
 /**
  * @method
  */
-Soil.prototype.update = function () {
-
-}
-
-/**
- * @method
- */
 Soil.prototype.getPixel = function (x, y) {
 	var pixelData = this.ctx.getImageData(x, y, 1, 1)
 	if (pixelData.data[3] > 0) return 1
 	else return 0
-}
-
-/**
- * @method
- * @todo
- */
-Soil.prototype.alphaChunk = function (x, y) {
-	this.ctx.fillStyle = 'white'
-	this.ctx.globalCompositeOperation = 'lighter'
-	this.ctx.beginPath()
-	this.ctx.arc(x, y, 10, 0, Math.PI * 2, false)
-	this.ctx.fill()
 }
 
 /**

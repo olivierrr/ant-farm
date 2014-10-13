@@ -33,11 +33,4 @@ Backdrop.prototype.boot = function () {
 
 }
 
-/**
- * @method
- */
-Backdrop.prototype.update = function () {
-
-}
-
 module.exports = Backdrop

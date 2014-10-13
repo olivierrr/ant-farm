@@ -88,8 +88,6 @@ Colony.prototype.update = function () {
 
 		ctx.fillRect(ant.x, ant.y, antSize, antSize)
 
-		// ctx.fillStyle = '#0074FF'
-		// ctx.fillRect(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2), 1, 1)
 	}
 
 }
@@ -99,13 +97,6 @@ Colony.prototype.update = function () {
  */
 Colony.prototype.newAnt = function (x, y) {
 	this.ants.push(new Ant(x, y))
-}
-
-/**
- * @method
- */
-Colony.prototype.method_name = function () {
-	
 }
 
 module.exports = Colony

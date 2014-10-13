@@ -74,25 +74,9 @@ AntFarm.prototype.appendCanvas = function () {
 /**
  * @method
  */
-AntFarm.prototype.update = function () {
-	this.backdrop.update()
-	this.soil.update()
-	this.colony.update()
-}
-
-/**
- * @method
- */
 AntFarm.prototype.tick = function () {
-	this.update()
+	this.colony.update()
 	requestAnimationFrame(this.tick.bind(this))
-}
-
-/**
- * @method
- */
-AntFarm.prototype.method_name = function () {
-
 }
 
 // dev
@@ -126,4 +110,4 @@ window.setInterval(function () {
 	if(isDropping && o.soil.getPixel(mousePos.x, mousePos.y) === 0) {
 		o.colony.newAnt(mousePos.x, mousePos.y)
 	}
-}, 10)
+}, 1)
