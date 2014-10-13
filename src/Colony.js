@@ -21,6 +21,7 @@ function Colony (antFarm, ctx) {
 	 */
 	this.ants = []
 
+	this.boot()
 }
 
 /**

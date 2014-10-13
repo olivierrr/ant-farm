@@ -8,52 +8,42 @@ var Colony = require('./Colony')
  * @param {Number} [100%]
  * @param {Number} [100%]
  */
-function AntFarm (container, width, height) {
+function AntFarm (obj) {
 
 	/**
 	 * @property {Object} - 'options'
 	 */
-	this.ops = {
-		container: container || document.body,
-		width: width || window.innerWidth,
-		height: height || window.innerHeight,
-		initialAntCount: 5,
-		initialSoilDepth: 0.90,
-		antSize: 3
-	}
+	this.ops = {}
 
 	/**
-	 * @property {Object}
+	 * @property {Object} - canvas layer
 	 */
 	this.colony = null
 
 	/**
-	 * @property {Object}
+	 * @property {Object} - canvas layer
 	 */
 	this.soil = null
 
 	/**
-	 * @property {Object}
+	 * @property {Object} - canvas layer
 	 */
 	this.backdrop = null
 
+	this.parseOps(obj)
 	this.boot()
 }
 
 /**
- * assign canvas layers and boot objects
+ * assign canvas layers
  *
  * @method
  */
-AntFarm.prototype.boot = function () {
+AntFarm.prototype.boot = function (container, width, height) {
 
 	this.backdrop = new Backdrop(this, this.appendCanvas())
-	this.soil = new Soil(this, this.appendCanvas())
-	this.colony = new Colony(this, this.appendCanvas())
-
-	this.backdrop.boot()
-	this.soil.boot()
-	this.colony.boot()
+	this.soil 	  = new Soil(this, this.appendCanvas())
+	this.colony   = new Colony(this, this.appendCanvas())
 
 	this.tick()
 
@@ -62,21 +52,44 @@ AntFarm.prototype.boot = function () {
 /**
  * @method
  */
+AntFarm.prototype.parseOps = function (obj) {
+
+	obj = obj || {}
+
+	this.ops.container = obj.container || document.body
+
+	this.ops.width  = obj.width  || this.ops.container.offsetWidth  || window.innerWidth
+	this.ops.height = obj.height || this.ops.container.offsetHeight || window.innerHeight
+
+	this.ops.initialAntCount  = obj.initialAntCount  || 5
+	this.ops.initialSoilDepth = obj.initialSoilDepth || 0.9
+	this.ops.antSize 		  = obj.antSize 		 || 3
+
+}
+
+/**
+ * @method
+ */
 AntFarm.prototype.appendCanvas = function () {
+
 	var canvas = document.createElement('canvas')
 	canvas.style.position = 'absolute'
 	canvas.width = this.ops.width
 	canvas.height = this.ops.height
 	this.ops.container.appendChild(canvas)
+
 	return canvas.getContext('2d')
+
 }
 
 /**
  * @method
  */
 AntFarm.prototype.tick = function () {
+
 	this.colony.update()
 	requestAnimationFrame(this.tick.bind(this))
+
 }
 
 // dev

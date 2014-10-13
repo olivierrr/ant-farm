@@ -15,6 +15,7 @@ function Soil (antFarm, ctx) {
 	 */
 	this.ctx = ctx
 
+	this.boot()
 }
 
 /**

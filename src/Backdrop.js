@@ -15,6 +15,7 @@ function Backdrop (antFarm, ctx) {
 	 */
 	this.ctx = ctx
 
+	this.boot()
 }
 
 /**
