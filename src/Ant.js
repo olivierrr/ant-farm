@@ -9,39 +9,4 @@ function Ant (x, y) {
 
 }
 
-/**
- * @method
- */
-Ant.prototype.boot = function () {
-
-}
-
-/**
- * @method
- */
-Ant.prototype.update = function () {
-	
-}
-
-/**
- * @method
- */
-Ant.prototype.render = function () {
-
-}
-
-/**
- * @method
- */
-Ant.prototype.method_name = function () {
-	
-}
-
-/**
- * @method
- */
-Ant.prototype.method_name = function () {
-	
-}
-
 module.exports = Ant
