@@ -1,4 +1,3 @@
-var utils = require('./Utils')
 
 /**
  * @constructor
