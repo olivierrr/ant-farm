@@ -30,6 +30,9 @@ function AntFarm (obj) {
 	 */
 	this.backdrop = null
 
+	/**
+	 * @property {Object}
+	 */
 	this.mouse = {
 		posX: 0,
 		posY: 0,
@@ -45,7 +48,7 @@ function AntFarm (obj) {
  *
  * @method
  */
-AntFarm.prototype.boot = function (container, width, height) {
+AntFarm.prototype.boot = function () {
 
 	this.backdrop = new Backdrop(this, this.appendCanvas())
 	this.soil 	  = new Soil(this, this.appendCanvas())
@@ -57,6 +60,8 @@ AntFarm.prototype.boot = function (container, width, height) {
 }
 
 /**
+ * parse options
+ *
  * @method
  */
 AntFarm.prototype.parseOps = function (obj) {
@@ -99,6 +104,9 @@ AntFarm.prototype.tick = function () {
 
 }
 
+/**
+ * @method
+ */
 AntFarm.prototype.attachEvents = function () {
 
 	var _this = this
