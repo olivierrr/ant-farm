@@ -30,6 +30,12 @@ function AntFarm (obj) {
 	 */
 	this.backdrop = null
 
+	this.mouse = {
+		posX: 0,
+		posY: 0,
+		isDown: false
+	}
+
 	this.parseOps(obj)
 	this.boot()
 }
@@ -45,6 +51,7 @@ AntFarm.prototype.boot = function (container, width, height) {
 	this.soil 	  = new Soil(this, this.appendCanvas())
 	this.colony   = new Colony(this, this.appendCanvas())
 
+	this.attachEvents()
 	this.tick()
 
 }
@@ -92,35 +99,30 @@ AntFarm.prototype.tick = function () {
 
 }
 
+AntFarm.prototype.attachEvents = function () {
+
+	var _this = this
+
+	this.ops.container.addEventListener('mousedown', function (e) {
+		_this.mouse.posX = e.x
+		_this.mouse.posY = e.y
+		_this.mouse.isDown = true
+	})
+
+	this.ops.container.addEventListener('mousemove', function (e) {
+		_this.mouse.posX = e.x
+		_this.mouse.posY = e.y
+	})
+
+	this.ops.container.addEventListener('mouseup', function (e) {
+		_this.mouse.isDown = false
+	})
+
+}
+
 // dev
 window.o = new AntFarm()
 document.body.style.overflow = 'hidden'
 document.body.style.margin = '0px'
 document.body.style.padding = '0px'
 
-var isDropping = false
-var mousePos = {
-	x: 0,
-	y: 0
-}
-
-document.body.addEventListener('mousedown', function (e) {
-	isDropping = true
-	mousePos.x = e.x
-	mousePos.y = e.y
-})
-
-document.body.addEventListener('mousemove', function (e) {
-	mousePos.x = e.x
-	mousePos.y = e.y
-})
-
-document.body.addEventListener('mouseup', function (e) {
-	isDropping = false
-})
-
-window.setInterval(function () {
-	if(isDropping && o.soil.getPixel(mousePos.x, mousePos.y) === 0) {
-		o.colony.newAnt(mousePos.x, mousePos.y)
-	}
-}, 1)

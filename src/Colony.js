@@ -1,5 +1,3 @@
-var Ant = require('./Ant')
-,	utils = require('./Utils')
 
 /**
  * @constructor
@@ -38,13 +36,14 @@ function Colony (antFarm, ctx) {
  */
 Colony.prototype.boot = function () {
 
-	var width = this.antFarm.ops.width
-	,	height = this.antFarm.ops.height
-	,	soilDepth = this.antFarm.ops.initialSoilDepth
+	var ops = this.antFarm.ops
+	,	ctx = this.ctx
 
-	for (var i = 0; i < this.antFarm.ops.initialAntCount; i++) {
-		this.newAnt(utils.randomIntBetween(0, width), height*(1-soilDepth-0.05))
+	for (var i = 0; i < ops.initialAntCount ; i++) {
+		this.newAnt(~~(Math.random()*ops.width), ops.height*(1-ops.initialSoilDepth-.05))
 	}
+
+	ctx.fillStyle = 'black'
 
 }
 
@@ -52,11 +51,6 @@ Colony.prototype.boot = function () {
  * @method
  */
 Colony.prototype.update = function () {
-
-	if(this.ticksUntilCollect-- === 0) {
-		this.collectOutOfBounds()
-		this.ticksUntilCollect = 500
-	} 
 
 	var ctx = this.ctx
 	,	ant
@@ -66,37 +60,37 @@ Colony.prototype.update = function () {
 	,	height = this.antFarm.ops.height
 	,	antSize = this.antFarm.ops.antSize
 	,	halfAntSize = Math.round(antSize/2)
+	,	mouse = this.antFarm.mouse
+	,	randomNum
+
+	if(this.ticksUntilCollect-- === 0) {
+		this.collectOutOfBounds()
+		this.ticksUntilCollect = 500
+	}
 
 	ctx.clearRect(0, 0, width, height)
-	ctx.fillStyle = 'black'
+
+	if(mouse.isDown /*&& soil.getPixel(mouse.posX, mouse.posY) === 0*/) {
+		this.newAnt(mouse.posX, mouse.posY)
+	}
 
 	for (var i = 0; i < this.ants.length; i++) {
 		ant = this.ants[i]
 
 		pixel = soil.getPixel(ant.x + halfAntSize, (ant.y - 1) + (halfAntSize * 2))
-		var randomNum = utils.randomIntBetween(0, 10)
-
 		if(pixel === 0) ant.y += 1.5
 
-		switch (randomNum) {
-			case 1:
-				soil.removeChunk(ant.x + halfAntSize, (ant.y-1) + (halfAntSize * 2))
-				ant.y += 0.5
-				break
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-				soil.removeChunk(ant.x, (ant.y-1) + (halfAntSize * 2))
-				ant.x += 1
-				break
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-				soil.removeChunk(ant.x + antSize, (ant.y-1) + (halfAntSize))
-				ant.x -= 1
-				break
+		randomNum = ~~(Math.random()*11)
+
+		if(randomNum < 1) {
+			soil.removeChunk(ant.x + halfAntSize, (ant.y-1) + (halfAntSize * 2))
+			ant.y += 0.5
+		} else if (randomNum < 6) {
+			soil.removeChunk(ant.x, (ant.y-1) + (halfAntSize * 2))
+			ant.x += 1
+		} else {
+			soil.removeChunk(ant.x + antSize, (ant.y-1) + (halfAntSize))
+			ant.x -= 1
 		}
 
 		ctx.fillRect(ant.x, ant.y, antSize, antSize)
@@ -122,7 +116,10 @@ Colony.prototype.collectOutOfBounds = function () {
  * @method
  */
 Colony.prototype.newAnt = function (x, y) {
-	this.ants.push(new Ant(x, y))
+	this.ants.push({
+		x: x,
+		y: y
+	})
 }
 
 module.exports = Colony
